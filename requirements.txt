@@ -1,0 +1,7 @@
+pandas>=2.0
+gspread>=6.0
+gspread-dataframe>=3.2
+oauth2client>=4.1.3
+requests>=2.31
+python-dotenv>=1.0
+pushover-python>=0.3
