@@ -1,39 +1,6 @@
 import pandas as pd
 from datetime import datetime
 
-def miles_since_date_check(combined_df, date, threshold=100):
-    """
-    Check if total distance since a given date exceeds a threshold.
-
-    Parameters:
-    - combined_df: DataFrame with 'start_date_local' and 'distance_miles' columns
-    - date: str or datetime, the date from which to sum distances
-    - threshold: float, the number of miles to check against (default 100)
-
-    Returns:
-    - dict with:
-        'exceeds_threshold': True/False
-        'total_miles': float, total miles since given date
-    """
-    
-    # Convert input date to UTC
-    date_utc = pd.to_datetime(date)
-    if date_utc.tzinfo is None:
-        date_utc = date_utc.tz_localize('UTC')
-    
-    # Filter rows after the given date
-    filtered_df = combined_df[combined_df['start_date_local'] > date_utc]
-    
-    # Sum distances
-    total_miles = filtered_df['distance_miles'].sum()
-    
-    # Return dictionary
-    return {
-        'exceeds_threshold': total_miles >= threshold,
-        'total_miles': total_miles
-    }
-
-
 def wax_chain_alert(combined_df, form_responses_df, gear_id='b14816258', threshold=5):
     """
     Check if miles since last 'Wax chain' action exceed a threshold and create an alert DataFrame.
