@@ -30,7 +30,7 @@ def wax_chain_alert(combined_df, form_responses_df, gear_id='b14816258', thresho
         return None  # No previous wax action to compare
     
     # Check miles since last wax
-    rides_since_last_wax = rides_df[rides_df['start_date_local'] > pd.to_datetime(last_wax_date, utc=True)]
+    rides_since_last_wax = rides_df[rides_df['start_date_local'] > pd.to_datetime(last_wax_date)]
     total_miles = rides_since_last_wax['distance_miles'].sum()
 
     return {
