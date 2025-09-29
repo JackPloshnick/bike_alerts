@@ -4,6 +4,7 @@ from gspread_dataframe import get_as_dataframe, set_with_dataframe
 import json
 import os
 from dotenv import load_dotenv
+
 load_dotenv()
 
 service_string = os.environ["GOOGLE_SHEETS_SERVICE_ACCOUNT"]
