@@ -20,6 +20,7 @@ GOOGLE_SHEETS_URL_KEY = os.environ["GOOGLE_SHEETS_URL_KEY"]
 PUSHOVER_USER_KEY = os.environ["PUSHOVER_USER_KEY"]
 PUSHOVER_APP_TOKEN = os.environ["PUSHOVER_APP_TOKEN"]
 
+
 logger.info("Environment variables loaded.")
 
 # ------------------- Get Activities -------------------
