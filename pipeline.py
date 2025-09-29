@@ -16,9 +16,9 @@ logger = logging.getLogger(__name__)
 
 # ------------------- Load Environment -------------------
 load_dotenv()
-GOOGLE_SHEETS_URL_KEY = os.getenv("GOOGLE_SHEETS_URL_KEY")
-PUSHOVER_USER_KEY = os.getenv("PUSHOVER_USER_KEY")
-PUSHOVER_APP_TOKEN = os.getenv("PUSHOVER_APP_TOKEN")
+GOOGLE_SHEETS_URL_KEY = os.environ["GOOGLE_SHEETS_URL_KEY"]
+PUSHOVER_USER_KEY = os.environ["PUSHOVER_USER_KEY"]
+PUSHOVER_APP_TOKEN = os.environ["PUSHOVER_APP_TOKEN"]
 
 logger.info("Environment variables loaded.")
 

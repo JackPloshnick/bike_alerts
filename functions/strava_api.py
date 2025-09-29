@@ -8,9 +8,9 @@ import os
 
 # get secrets from .env
 load_dotenv(".env")
-STRAVA_CLIENT_ID = os.getenv("STRAVA_CLIENT_ID")
-STRAVA_CLIENT_SECRET = os.getenv("STRAVA_CLIENT_SECRET")
-STRAVA_REFRESH_TOKEN = os.getenv("STRAVA_REFRESH_TOKEN")
+STRAVA_CLIENT_ID = os.environ["STRAVA_CLIENT_ID"]
+STRAVA_CLIENT_SECRET = os.environ["STRAVA_CLIENT_SECRET"]
+STRAVA_REFRESH_TOKEN = os.environ["STRAVA_REFRESH_TOKEN"]
 
 
 # Get access token. Must be done every session
