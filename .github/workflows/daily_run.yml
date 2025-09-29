@@ -1,0 +1,28 @@
+name: Daily Python Script
+
+on:
+  schedule:
+    # Runs every day at 09:00 UTC
+    - cron: "0 13 * * *"
+  workflow_dispatch:  # lets you run it manually from the Actions tab
+
+jobs:
+  run-script:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+
+      - name: Run script
+        run: python pipeline.py
