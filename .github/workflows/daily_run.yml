@@ -1,9 +1,9 @@
 name: Daily Python Script
 
 on:
-  schedule:
-    # Runs every day at 12:00 UTC
-    - cron: "0 12 * * *"
+schedule:
+  - cron: "0 8 * * *"
+    timezone: "America/New_York"
   workflow_dispatch:  # lets you run it manually from the Actions tab
 
 jobs:
