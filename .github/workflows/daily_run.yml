@@ -2,8 +2,7 @@ name: Daily Python Script
 
 on:
   schedule:
-    - cron: "0 8 * * *"
-      timezone: "America/New_York"
+    - cron: "0 12 * * *"
   workflow_dispatch:  # allows manual runs from the Actions tab
 
 jobs:
