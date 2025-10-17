@@ -1,6 +1,6 @@
 import pandas as pd
 from datetime import datetime
-
+from zoneinfo import ZoneInfo
 
 def wax_chain_alert(combined_df, form_responses_df, gear_id="b14816258", threshold=5):
     """
@@ -45,9 +45,13 @@ def wax_chain_alert(combined_df, form_responses_df, gear_id="b14816258", thresho
     ]
     total_miles = rides_since_last_wax["distance_miles"].sum()
 
+    # explicity get eastern time. github will run in utc
+    eastern_time = datetime.now(ZoneInfo("America/New_York"))
+    formatted_time = eastern_time.strftime("%Y-%m-%d %H:%M:%S")
+
     return {
         "issue_alert": total_miles >= threshold,
-        "date": datetime.today().strftime("%Y-%m-%d %H:%M:%S"),
+        "date": formatted_time,
         "action_type": "Wax chain",
         "threshold": threshold,
         "miles_since_last_action": total_miles,
