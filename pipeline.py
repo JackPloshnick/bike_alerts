@@ -1,6 +1,6 @@
 # imports
 import logging
-from functions import alert_logic, gsheets, pushover, strava_api
+from functions import alert_logic, gsheets, email, strava_api
 import pandas as pd
 from dotenv import load_dotenv
 import os
@@ -17,8 +17,9 @@ logger = logging.getLogger(__name__)
 # ------------------- Load Environment -------------------
 load_dotenv()
 GOOGLE_SHEETS_URL_KEY = os.environ["GOOGLE_SHEETS_URL_KEY"]
-PUSHOVER_USER_KEY = os.environ["PUSHOVER_USER_KEY"]
-PUSHOVER_APP_TOKEN = os.environ["PUSHOVER_APP_TOKEN"]
+GMAIL = os.environ["GMAIL"]
+GMAIL_APP_PASSWORD = os.environ["GMAIL_APP_PASSWORD"]
+
 
 
 logger.info("Environment variables loaded.")
@@ -68,20 +69,22 @@ except Exception as e:
 # ------------------- Create Alert -------------------
 try:
     logger.info("Checking for chain wax alert...")
-    alert = alert_logic.wax_chain_alert(combined_df, form_responses_df, threshold=200)
+    alert = alert_logic.wax_chain_alert(combined_df, form_responses_df, threshold=20)
 
     gsheets.append_alert_row(alert, GOOGLE_SHEETS_URL_KEY)
     logger.info(f"Alert row appended: {alert}")
 
     if alert["issue_alert"]:
-        logger.info("Alert needed! Sending Pushover notification...")
-        pushover.send_pushover_notification(
-            "Chain Wax Alert",
-            f"Wax Chain! Last chain wax: {alert['miles_since_last_action']:.1f} miles ago",
-            PUSHOVER_APP_TOKEN,
-            PUSHOVER_USER_KEY,
+        logger.info("Alert needed! Sending Email notification...")
+
+        email.send_email_notification(
+            subject=f"Wax Chain! Last chain wax: {alert['miles_since_last_action']:.1f} miles ago",
+            message=f"Wax Chain! Last chain wax: {alert['miles_since_last_action']:.1f} miles ago",
+            sender_email=GMAIL,
+            sender_password=GMAIL_APP_PASSWORD,
+            recipient_email=GMAIL
         )
-        logger.info("Pushover notification sent.")
+        logger.info("Email notification sent.")
     else:
         logger.info("No issue alert. Only logging alert row.")
 
