@@ -69,7 +69,7 @@ except Exception as e:
 # ------------------- Create Alert -------------------
 try:
     logger.info("Checking for chain wax alert...")
-    alert = alert_logic.wax_chain_alert(combined_df, form_responses_df, threshold=20)
+    alert = alert_logic.wax_chain_alert(combined_df, form_responses_df, threshold=200)
 
     gsheets.append_alert_row(alert, GOOGLE_SHEETS_URL_KEY)
     logger.info(f"Alert row appended: {alert}")
