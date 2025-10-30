@@ -27,15 +27,36 @@ def read_from_gsheets(tab_name, GOOGLE_SHEETS_URL_KEY):
     return df
 
 
-def append_alert_row(alert, GOOGLE_SHEETS_URL_KEY):
+def append_alerts_to_sheet(alert_df, GOOGLE_SHEETS_URL_KEY):
+    """
+    Append one row per maintenance alert to the 'Alerts' sheet.
+
+    Parameters:
+    - alert_df: DataFrame returned from maintenance_alert()
+    - GOOGLE_SHEETS_URL_KEY: str, Google Sheets key (not full URL)
+    """
+    if alert_df is None or alert_df.empty:
+        print("No alerts to append.")
+        return
+
     gc = gspread.service_account_from_dict(service_dict)
     spreadsheet = gc.open_by_key(GOOGLE_SHEETS_URL_KEY)
-    alerts_worksheet = spreadsheet.worksheet("Alerts")
-    row = [
-        bool(alert["issue_alert"]),
-        str(alert["date"]),
-        str(alert["action_type"]),
-        int(alert["threshold"]),
-        float(alert["miles_since_last_action"]),
-    ]
-    alerts_worksheet.append_row(row)
+    worksheet = spreadsheet.worksheet("Alerts")
+
+    rows_to_append = []
+    for _, alert in alert_df.iterrows():
+        row = [
+            bool(alert.get("issue_alert", False)),
+            str(alert.get("date", "")),
+            str(alert.get("action_type", "")),
+            str(alert.get("miles_threshold", "")),   # can be None
+            float(alert.get("miles_since_last_action", 0.0)),
+            str(alert.get("days_threshold", "")),    # can be None
+            int(alert.get("days_since_last_action", 0)),
+        ]
+        rows_to_append.append(row)
+
+    # Append all rows at once for efficiency
+    worksheet.append_rows(rows_to_append, value_input_option="USER_ENTERED")
+    print(f"Appended {len(rows_to_append)} alert(s) to Google Sheet.")
+
