@@ -68,18 +68,18 @@ except Exception as e:
 
 # ------------------- Create Alert -------------------
 try:
-    logger.info("Checking for chain wax alert...")
-    alert = alert_logic.wax_chain_alert(combined_df, form_responses_df, threshold=200)
+    logger.info("Checking if thresholds are met...")
+    alert_df = alert_logic.maintenance_alert(combined_df, form_responses_df, gear_id="b14816258")
 
-    gsheets.append_alert_row(alert, GOOGLE_SHEETS_URL_KEY)
-    logger.info(f"Alert row appended: {alert}")
+    gsheets.append_alerts_to_sheet(alert_df=alert_df, GOOGLE_SHEETS_URL_KEY=GOOGLE_SHEETS_URL_KEY)
+    logger.info(f"Alert row appended to Google Sheets.")
 
-    if alert["issue_alert"]:
+    if alert_df["issue_alert"].any():
         logger.info("Alert needed! Sending Email notification...")
 
+        alert_df = alert_df[alert_df["issue_alert"] == True]
         email.send_email_notification(
-            subject=f"Wax Chain! Last chain wax: {alert['miles_since_last_action']:.1f} miles ago",
-            message=f"Wax Chain! Last chain wax: {alert['miles_since_last_action']:.1f} miles ago",
+            alert_df=alert_df,
             sender_email=GMAIL,
             sender_password=GMAIL_APP_PASSWORD,
             recipient_email=GMAIL
@@ -89,6 +89,6 @@ try:
         logger.info("No issue alert. Only logging alert row.")
 
 except Exception as e:
-    logger.exception(f"Error creating or sending alert: {e}")
+     logger.exception(f"Error creating or sending alert: {e}")
 
 logger.info("Script finished.")
