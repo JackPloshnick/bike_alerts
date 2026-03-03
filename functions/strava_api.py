@@ -89,5 +89,6 @@ def build_activities_dataframe(activities):
     # change types of date fields
     df["start_date"] = pd.to_datetime(df["start_date"])
     df["start_date_local"] = pd.to_datetime(df["start_date_local"])
+    df["excel_date"] = pd.to_datetime(df["start_date_local"]).dt.date
 
     return df
