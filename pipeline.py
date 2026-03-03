@@ -39,8 +39,8 @@ try:
 
     # Combine and deduplicate
     combined_df = pd.concat([sheets_df, new_activities_df], ignore_index=True)
-    combined_df = combined_df.drop_duplicates(subset="upload_id", keep="last")
-    combined_df = combined_df.sort_values(by="upload_id").reset_index(drop=True)
+    combined_df = combined_df.drop_duplicates(subset="id", keep="last")
+    combined_df = combined_df.sort_values(by="id").reset_index(drop=True)
     logger.info(
         f"Combined dataframe now has {len(combined_df)} rows after deduplication."
     )
