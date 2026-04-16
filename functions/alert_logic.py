@@ -4,14 +4,14 @@ from zoneinfo import ZoneInfo
 from functions.thresholds import thresholds
 
 
-def maintenance_alert(combined_df, form_responses_df, gear_id="b14816258"):
+def maintenance_alert(combined_df, form_responses_df, gear_id=["b14816258","b17662718"]):
     """
     Check all maintenance thresholds (miles/days) for a given bike and create alerts if due.
 
     Parameters:
     - combined_df: DataFrame with bike activities ('type', 'gear_id', 'start_date_local', 'distance_miles')
     - form_responses_df: DataFrame with maintenance actions ('Action', 'datetime')
-    - gear_id: str, the gear_id for the bike
+    - gear_id: list, the gear_id for the bike
 
     Returns:
     - alert_df: DataFrame with one row per maintenance type, including `issue_alert` flag.
@@ -45,7 +45,7 @@ def maintenance_alert(combined_df, form_responses_df, gear_id="b14816258"):
         # Filter rides since last action
         rides_df = combined_df[
             (combined_df["type"].isin(["Ride", "VirtualRide"]))
-            & (combined_df["gear_id"] == gear_id)
+            & (combined_df["gear_id"].isin(gear_id))
             & (combined_df["start_date_local"] > last_action_dt)
         ]
 
