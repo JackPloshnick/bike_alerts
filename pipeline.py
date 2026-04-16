@@ -69,7 +69,7 @@ except Exception as e:
 # ------------------- Create Alert -------------------
 try:
     logger.info("Checking if thresholds are met...")
-    alert_df = alert_logic.maintenance_alert(combined_df, form_responses_df, gear_id="b14816258")
+    alert_df = alert_logic.maintenance_alert(combined_df, form_responses_df, gear_id=["b14816258","b17662718"])
 
     gsheets.append_alerts_to_sheet(alert_df=alert_df, GOOGLE_SHEETS_URL_KEY=GOOGLE_SHEETS_URL_KEY)
     logger.info(f"Alert row appended to Google Sheets.")
